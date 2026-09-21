@@ -15,7 +15,7 @@ Aggregate free tiers from dozens of providers, plus custom OpenAI-compatible cha
 
 **[spadak.ai](https://spadak.ai/?utm_source=github&utm_medium=readme&utm_campaign=repository&utm_content=readme_top)** · browse the full catalog: 474 model families, 635 free endpoints
 
-**English** · [简体中文](README.zh-cn.md)
+**English** · [فارسی](docs/fa/README.md) · [简体中文](README.zh-cn.md)
 
 <p align="center">
   <a href="https://github.com/mpsaeid-spadak/spadak-ai-gateway/releases/latest"><img src="repo-assets/badges/macos.svg" height="48" alt="Download for macOS"></a>

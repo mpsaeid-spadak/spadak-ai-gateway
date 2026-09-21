@@ -2,6 +2,7 @@
 
 Pick a language:
 
+- **فارسی (Persian):** [docs/fa/README.md](fa/README.md)
 - **English:** [docs/en/README.md](en/README.md)
 - **简体中文:** [docs/zh-cn/README.md](zh-cn/README.md)
 

@@ -133,9 +133,14 @@ function NavItem({ to, children }: { to: string; children: React.ReactNode }) {
 
 function Brand() {
   return (
-    <Link to="/" className="flex items-center gap-2 transition-opacity hover:opacity-70">
-      <span className="inline-block size-2 rounded-full bg-foreground" />
-      <span className="font-semibold tracking-tight text-sm">Spadak AI Gateway</span>
+    <Link to="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-85">
+      <div className="flex size-7 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-sm font-bold text-xs tracking-wider">
+        S
+      </div>
+      <div className="flex flex-col">
+        <span className="font-bold tracking-tight text-sm leading-none text-foreground">Spadak AI</span>
+        <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">Gateway</span>
+      </div>
     </Link>
   )
 }
