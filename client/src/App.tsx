@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, NavLink, Link, useLocation, useNavigate } from 'react-router-dom'
 import { MutationCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ChevronDown, KeyRound, LogOut, Menu, MoreHorizontal, Search, Settings, Sparkles } from 'lucide-react'
+import { ChevronDown, KeyRound, LogOut, Menu, MoreHorizontal, Search, Settings } from 'lucide-react'
 import { buttonVariants } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -21,7 +21,6 @@ import { ErrorBoundary } from '@/components/error-boundary'
 import { SettingsDialog } from '@/components/settings-dialog'
 import { Toaster } from '@/components/toaster'
 import { UpdateReminder } from '@/components/update-reminder'
-import { usePremium } from '@/hooks/use-premium'
 import { I18nProvider, useI18n } from '@/i18n'
 import { logout } from '@/lib/api'
 import { toast } from '@/lib/toast'
@@ -39,7 +38,6 @@ import MediaDetailPage from '@/pages/MediaDetailPage'
 import EmbeddingDetailPage from '@/pages/EmbeddingDetailPage'
 import AnalyticsPage from '@/pages/AnalyticsPage'
 import LogsPage from '@/pages/LogsPage'
-import PremiumPage from '@/pages/PremiumPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 import AgentsPage from '@/pages/AgentsPage'
 
@@ -70,7 +68,6 @@ const navItems = [
   { to: '/keys', labelKey: 'nav.keys' },
   { to: '/agents', labelKey: 'nav.agents' },
   { to: '/analytics', labelKey: 'nav.analytics' },
-  { to: '/premium', labelKey: 'nav.premium' },
 ]
 
 // The modality pages behind "Models"; surfaced in the nav dropdown and
@@ -171,36 +168,24 @@ if (isDesktopApp) {
 }
 
 function AccountMenuItems({
-  showUpgrade,
-  upgradeLabel,
   settingsLabel,
   signOutLabel,
   changeEmailLabel,
   changePasswordLabel,
-  onUpgrade,
   onOpenSettings,
   onChangeEmail,
   onChangePassword,
 }: {
-  showUpgrade: boolean
-  upgradeLabel: string
   settingsLabel: string
   signOutLabel: string
   changeEmailLabel: string
   changePasswordLabel: string
-  onUpgrade: () => void
   onOpenSettings: () => void
   onChangeEmail: () => void
   onChangePassword: () => void
 }) {
   return (
     <>
-      {showUpgrade && (
-        <DropdownMenuItem onClick={onUpgrade}>
-          <Sparkles />
-          {upgradeLabel}
-        </DropdownMenuItem>
-      )}
       <DropdownMenuItem onClick={onOpenSettings}>
         <Settings />
         {settingsLabel}
@@ -234,8 +219,6 @@ function Navbar() {
   const navigate = useNavigate()
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [credentialsMode, setCredentialsMode] = useState<'password' | 'email' | null>(null)
-  const { data: premium, licensed, isLoading: premiumLoading, isError: premiumError } = usePremium()
-  const showUpgrade = Boolean(premium) && !licensed && !premiumLoading && !premiumError
 
   return (
     <>
@@ -309,13 +292,10 @@ function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <AccountMenuItems
-                  showUpgrade={showUpgrade}
-                  upgradeLabel={t('nav.upgrade')}
                   settingsLabel={t('nav.settings')}
                   signOutLabel={t('nav.signOut')}
                   changeEmailLabel={t('auth.changeEmail')}
                   changePasswordLabel={t('auth.changePassword')}
-                  onUpgrade={() => navigate('/premium')}
                   onOpenSettings={() => setSettingsOpen(true)}
                   onChangeEmail={() => setCredentialsMode('email')}
                   onChangePassword={() => setCredentialsMode('password')}
@@ -363,13 +343,10 @@ function Navbar() {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <AccountMenuItems
-                  showUpgrade={showUpgrade}
-                  upgradeLabel={t('nav.upgrade')}
                   settingsLabel={t('nav.settings')}
                   signOutLabel={t('nav.signOut')}
                   changeEmailLabel={t('auth.changeEmail')}
                   changePasswordLabel={t('auth.changePassword')}
-                  onUpgrade={() => navigate('/premium')}
                   onOpenSettings={() => setSettingsOpen(true)}
                   onChangeEmail={() => setCredentialsMode('email')}
                   onChangePassword={() => setCredentialsMode('password')}
@@ -475,7 +452,6 @@ function App() {
                       <Route path="/fallback" element={<Navigate to="/models/chat" replace />} />
                       <Route path="/analytics" element={<AnalyticsPage />} />
                       <Route path="/logs" element={<LogsPage />} />
-                      <Route path="/premium" element={<PremiumPage />} />
                       <Route path="/test" element={<Navigate to="/playground" replace />} />
                       <Route path="/health" element={<Navigate to="/keys" replace />} />
                       <Route path="*" element={<NotFoundPage />} />

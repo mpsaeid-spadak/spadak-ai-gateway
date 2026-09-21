@@ -324,35 +324,34 @@ function formatTokens(n?: number): string {
 
 function Stat({ icon: Icon, label, value, sub, hint, className }: { icon: LucideIcon; label: string; value: string | number; sub?: string; hint?: string; className?: string }) {
   const card = (
-    <div className="rounded-3xl border bg-card px-4 py-3">
+    <div className="group relative overflow-hidden rounded-3xl border bg-card/80 backdrop-blur-xs p-4 shadow-xs transition-all duration-300 hover:shadow-md hover:border-emerald-500/30 hover:-translate-y-0.5">
+      <div className="absolute top-0 left-0 h-0.5 w-full bg-gradient-to-r from-emerald-500/0 via-emerald-500/40 to-teal-500/0 opacity-0 transition-opacity group-hover:opacity-100" />
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[11px] text-muted-foreground uppercase tracking-wider">{label}</p>
-        <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-          <Icon className="size-3.5" aria-hidden="true" />
+        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">{label}</p>
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 transition-colors group-hover:bg-emerald-500/20">
+          <Icon className="size-4" aria-hidden="true" />
         </span>
       </div>
-      <p className={`text-xl font-semibold tabular-nums mt-1 ${className ?? ''}`}>{value}</p>
-      {/* Optional second figure, so one card can carry two related numbers
-          instead of spending another slot in the summary row. */}
-      {sub ? <p className="text-[11px] text-muted-foreground tabular-nums truncate">{sub}</p> : null}
+      <p className={`text-2xl font-bold tracking-tight tabular-nums mt-2 ${className ?? ''}`}>{value}</p>
+      {sub ? <p className="text-xs text-muted-foreground tabular-nums truncate mt-1 font-medium">{sub}</p> : null}
     </div>
   )
-  // Same portal tooltip as the routing strategy chips. Opens BELOW the card:
-  // the stats row sits right under the sticky navbar.
   return hint ? <HoverTooltip text={hint} side="bottom" className="block">{card}</HoverTooltip> : card
 }
 
 function Panel({ icon: Icon, title, actions, children }: { icon: LucideIcon; title: string; actions?: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div className="rounded-3xl border bg-card">
-      <div className="px-4 py-3 border-b flex flex-wrap items-center justify-between gap-2">
-        <h3 className="flex items-center gap-2 text-sm font-medium">
-          <Icon className="size-4 text-muted-foreground" aria-hidden="true" />
+    <div className="relative overflow-hidden rounded-3xl border bg-card shadow-xs transition-all duration-200 hover:shadow-sm">
+      <div className="px-5 py-4 border-b border-border/60 flex flex-wrap items-center justify-between gap-3 bg-muted/20">
+        <h3 className="flex items-center gap-2.5 text-sm font-semibold tracking-tight">
+          <span className="flex size-7 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+            <Icon className="size-4" aria-hidden="true" />
+          </span>
           {title}
         </h3>
         {actions}
       </div>
-      <div className="p-4">{children}</div>
+      <div className="p-5">{children}</div>
     </div>
   )
 }
