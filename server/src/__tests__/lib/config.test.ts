@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { loadConfig } from '../../lib/config.js';
 
-const ENV_KEYS = ['PORT', 'HOST', 'FREEAPI_DB_PATH', 'DASHBOARD_ORIGINS', 'CLIENT_DIST', 'PROXY_RATE_LIMIT_RPM', 'NODE_ENV', 'TRUST_PROXY'];
+const ENV_KEYS = ['PORT', 'HOST', 'SPADAK_DB_PATH', 'DASHBOARD_ORIGINS', 'CLIENT_DIST', 'PROXY_RATE_LIMIT_RPM', 'NODE_ENV', 'TRUST_PROXY'];
 
 afterEach(() => {
   ENV_KEYS.forEach(k => delete process.env[k]);
@@ -39,8 +39,8 @@ describe('loadConfig', () => {
     expect(cfg.clientDist).toBe('/opt/client/dist');
   });
 
-  it('reads FREEAPI_DB_PATH from env', () => {
-    process.env.FREEAPI_DB_PATH = '/data/freeapi.db';
+  it('reads SPADAK_DB_PATH from env', () => {
+    process.env.SPADAK_DB_PATH = '/data/freeapi.db';
     expect(loadConfig().dbPath).toBe('/data/freeapi.db');
   });
 

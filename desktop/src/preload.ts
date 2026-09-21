@@ -5,7 +5,7 @@
 // which avoids templating strings into executeJavaScript.
 import { contextBridge, ipcRenderer } from 'electron';
 
-const TOKEN_KEY = 'freellmapi_dashboard_token';
+const TOKEN_KEY = 'spadak_dashboard_token';
 const arg = process.argv.find((a) => a.startsWith('--freeapi-token='));
 if (arg) {
   try {
@@ -17,8 +17,8 @@ if (arg) {
 
 // Lets the client adapt its chrome (drag region, traffic-light padding,
 // no Sign out) when running inside the desktop shell.
-contextBridge.exposeInMainWorld('__FREEAPI_DESKTOP__', true);
-contextBridge.exposeInMainWorld('__FREEAPI_PLATFORM__', process.platform);
+contextBridge.exposeInMainWorld('__SPADAK_DESKTOP__', true);
+contextBridge.exposeInMainWorld('__SPADAK_PLATFORM__', process.platform);
 
 // The dashboard window signs in as the hidden machine account, whose password
 // is random and never shown, so it must never land on the login form. When the
@@ -28,7 +28,7 @@ contextBridge.exposeInMainWorld('__FREEAPI_PLATFORM__', process.platform);
 // and every extra capability handed to that world is one an XSS could use —
 // this one only ever hands back a session for the account the window already
 // runs as.
-contextBridge.exposeInMainWorld('__FREEAPI_SESSION__', () => ipcRenderer.invoke('freeapi:session-token'));
+contextBridge.exposeInMainWorld('__SPADAK_SESSION__', () => ipcRenderer.invoke('freeapi:session-token'));
 
 // The running build's version, so the dashboard can show which one it is and
 // offer a check against the published releases (#703). Arrives the same way the
@@ -36,7 +36,7 @@ contextBridge.exposeInMainWorld('__FREEAPI_SESSION__', () => ipcRenderer.invoke(
 // rather than guessing from the server's own (unrelated) package version.
 const versionArg = process.argv.find((a) => a.startsWith('--freeapi-version='));
 contextBridge.exposeInMainWorld(
-  '__FREEAPI_VERSION__',
+  '__SPADAK_VERSION__',
   versionArg ? versionArg.slice('--freeapi-version='.length) : null,
 );
 

@@ -16,8 +16,8 @@ const DEFAULT_PORT = 31415;
 // Lean posture: one instance, menu-bar only. GPU stays ON — vibrancy
 // (the popover/dashboard glass) needs GPU compositing; with hardware
 // acceleration disabled, transparent windows render an opaque white.
-app.setName('FreeLLMAPI');
-app.setPath('userData', path.join(app.getPath('appData'), 'FreeLLMAPI'));
+app.setName('Spadak AI Gateway');
+app.setPath('userData', path.join(app.getPath('appData'), 'Spadak AI Gateway'));
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();
@@ -35,7 +35,7 @@ if (!app.requestSingleInstanceLock()) {
   // prefers-color-scheme tracks live appearance changes; `theme` is always
   // the resolved dark/light the popover snapshot needs.
   let themeChoice: 'dark' | 'light' | 'system' =
-    (process.env.FREEAPI_THEME as 'dark' | 'light' | 'system' | undefined) // dev-only screenshot override
+    (process.env.SPADAK_THEME as 'dark' | 'light' | 'system' | undefined) // dev-only screenshot override
     ?? loadConfig().theme
     ?? 'system';
   nativeTheme.themeSource = themeChoice;
@@ -55,7 +55,7 @@ if (!app.requestSingleInstanceLock()) {
   // The dashboard also owns the language (its ⋯-menu selector); the native tray
   // menu and popover follow via the same mirror-and-persist pattern as the theme.
   let locale: NativeLocale = normalizeLocale(
-    (process.env.FREEAPI_LOCALE as string | undefined) ?? loadConfig().locale,
+    (process.env.SPADAK_LOCALE as string | undefined) ?? loadConfig().locale,
   );
 
   app.on('second-instance', () => {
@@ -153,7 +153,7 @@ if (!app.requestSingleInstanceLock()) {
   ipcMain.handle('freeapi:set-login-item', (_e, open: boolean) => app.setLoginItemSettings({ openAtLogin: open }));
   ipcMain.handle('freeapi:quit', () => app.quit());
   // Dashboard → a fresh session for the hidden machine account (preload
-  // __FREEAPI_SESSION__). The window never shows a login form: its account has
+  // __SPADAK_SESSION__). The window never shows a login form: its account has
   // a random password nobody knows, so when the boot-time session is gone the
   // only sane answer is a new one. Later windows reuse it too.
   ipcMain.handle('freeapi:session-token', () => {
@@ -174,7 +174,7 @@ if (!app.requestSingleInstanceLock()) {
         defaultId: 1,
         cancelId: 1,
         title: 'Allow LAN access',
-        message: 'Expose FreeLLMAPI to your local network?',
+        message: 'Expose Spadak AI Gateway to your local network?',
         detail:
           'The server will bind to 0.0.0.0 so other devices (Tailscale, VMs, ' +
           'phones on your Wi-Fi) can reach it at http://<this-machine-ip>:' +
@@ -212,15 +212,15 @@ if (!app.requestSingleInstanceLock()) {
 
     const choice = dialog.showMessageBoxSync({
       type: 'info',
-      title: 'FreeLLMAPI has no menu-bar icon',
-      message: 'macOS is not showing the FreeLLMAPI menu-bar icon.',
+      title: 'Spadak AI Gateway has no menu-bar icon',
+      message: 'macOS is not showing the Spadak AI Gateway menu-bar icon.',
       detail:
         'The app and its API are running normally, but the icon everything else ' +
         'hangs off is not being drawn, so there is nothing to click.\n\n' +
-        'To bring it back: System Settings > Menu Bar, find FreeLLMAPI and set it ' +
+        'To bring it back: System Settings > Menu Bar, find Spadak AI Gateway and set it ' +
         'to Allow. On a Mac with a notch, quitting a few other menu-bar apps can ' +
         'also free up the room it needs.\n\n' +
-        'Until then, relaunching FreeLLMAPI from Finder opens the dashboard.',
+        'Until then, relaunching Spadak AI Gateway from Finder opens the dashboard.',
       buttons: ['Open Dashboard', 'Continue in Background'],
       defaultId: 0,
       cancelId: 1,
@@ -250,8 +250,8 @@ if (!app.requestSingleInstanceLock()) {
     const dbPath = path.join(app.getPath('userData'), 'freeapi.db');
     // Packaged: client/dist ships in extraResources (Resources/client-dist).
     // Dev: use this repo's own client/dist (desktop/ lives in the monorepo;
-    // FREEAPI_REPO can still point at a different checkout if ever needed).
-    const repoRoot = process.env.FREEAPI_REPO ?? path.resolve(__dirname, '../..');
+    // SPADAK_REPO can still point at a different checkout if ever needed).
+    const repoRoot = process.env.SPADAK_REPO ?? path.resolve(__dirname, '../..');
     const clientDist = app.isPackaged
       ? path.join(process.resourcesPath, 'client-dist')
       : path.join(repoRoot, 'client/dist');
@@ -266,7 +266,7 @@ if (!app.requestSingleInstanceLock()) {
     // version is both the cheapest and the most authoritative answer for the
     // dashboard's version row — no manifest lookup, and it cannot disagree with
     // the app the user actually launched (#703).
-    process.env.FREEAPI_VERSION = app.getVersion();
+    process.env.SPADAK_VERSION = app.getVersion();
 
     try {
       const { port } = await startServer({
@@ -287,29 +287,29 @@ if (!app.requestSingleInstanceLock()) {
         () => loadConfig().showInDock ?? true,
         toggleShowInDock,
       );
-      console.log(`[desktop] FreeLLMAPI running on http://${host}:${port}${cfg.lanAccess ? ' (LAN access enabled)' : ''}`);
+      console.log(`[desktop] Spadak AI Gateway running on http://${host}:${port}${cfg.lanAccess ? ' (LAN access enabled)' : ''}`);
       // A tray that macOS refuses to draw still constructs cleanly, so the only
       // way to notice is to look at where the item landed (#807).
       if (process.platform === 'darwin') setTimeout(() => reportHiddenTray(tray, port), TRAY_PROBE_DELAY_MS);
 
-      // Dev-only UI verification: FREEAPI_SHOT=1 opens the popover and the
-      // dashboard, captures both to /tmp, and quits. FREEAPI_SHOT=hold opens
+      // Dev-only UI verification: SPADAK_SHOT=1 opens the popover and the
+      // dashboard, captures both to /tmp, and quits. SPADAK_SHOT=hold opens
       // the popover and keeps it pinned (blur ignored) so a real screen
       // capture can include the compositor's vibrancy. Never set when packaged.
-      if (process.env.FREEAPI_SHOT && !app.isPackaged) {
+      if (process.env.SPADAK_SHOT && !app.isPackaged) {
         const fs = await import('node:fs');
         const { togglePopover, getPopoverWindow } = await import('./popover.js');
         const { getDashboardWindow } = await import('./window.js');
         const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
         await sleep(800);
         togglePopover(tray);
-        if (process.env.FREEAPI_SHOT === 'hold') {
+        if (process.env.SPADAK_SHOT === 'hold') {
           const pop = getPopoverWindow();
           pop?.removeAllListeners('blur'); // stay open unfocused
           if (pop) fs.writeFileSync('/tmp/freeapi-popover-bounds.json', JSON.stringify(pop.getBounds()));
-          // FREEAPI_THEME forces a theme for captures — skip the dashboard
+          // SPADAK_THEME forces a theme for captures — skip the dashboard
           // then, or its theme report would immediately override the override.
-          if (!process.env.FREEAPI_THEME) {
+          if (!process.env.SPADAK_THEME) {
             openDashboard(port, sessionToken);
             await sleep(2500);
             const dashWin = getDashboardWindow();
@@ -333,7 +333,7 @@ if (!app.requestSingleInstanceLock()) {
       }
     } catch (err: any) {
       dialog.showErrorBox(
-        'FreeLLMAPI failed to start',
+        'Spadak AI Gateway failed to start',
         err?.message ?? String(err),
       );
       app.quit();

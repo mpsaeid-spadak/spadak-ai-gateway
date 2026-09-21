@@ -54,7 +54,7 @@ describe('MCP server (/mcp, stateless Streamable HTTP)', () => {
     expect(status).toBe(200);
     expect(body.result.protocolVersion).toBe('2025-06-18');
     expect(body.result.capabilities.tools).toBeDefined();
-    expect(body.result.serverInfo.name).toBe('freellmapi');
+    expect(body.result.serverInfo.name).toBe('spadak');
 
     const unknown = await rpc({ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '1999-01-01' } });
     expect(unknown.body.result.protocolVersion).toBe('2025-06-18');

@@ -4,7 +4,6 @@ import { initDb, getDb } from './db/index.js';
 import { startHealthChecker, checkAllKeys } from './services/health.js';
 import { restoreProxySettings, flushProxyCache } from './lib/proxy.js';
 import { startWakeDetect } from './lib/wake-detect.js';
-import { startCatalogSync } from './services/catalog-sync.js';
 import { startCooldownProbe } from './services/cooldown-probe.js';
 import { startCustomModelSync } from './services/custom-model-sync.js';
 import { installProcessSafetyNet } from './lib/process-safety-net.js';
@@ -80,7 +79,6 @@ async function main() {
     console.log(`Server running on http://${display}:${PORT}`);
     console.log(`Proxy endpoint: http://${display}:${PORT}/v1/chat/completions`);
     startHealthChecker(scheduler);
-    startCatalogSync(scheduler);
     startCooldownProbe(scheduler);
     startDbBackupPump(getDb(), scheduler, config.dbPath ?? undefined);
     startBackupScheduler(scheduler);

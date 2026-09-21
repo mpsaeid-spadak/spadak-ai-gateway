@@ -7,7 +7,7 @@ import { getAppVersion } from '../lib/app-version.js';
 
 const execFileAsync = promisify(nodeExecFile);
 
-const REPOSITORY = 'tashfeenahmed/freellmapi';
+const REPOSITORY = 'your-org/spadak-ai-gateway';
 const RELEASES_URL = `https://github.com/${REPOSITORY}/releases`;
 const CACHE_TTL_MS = 5 * 60 * 1000;
 /**
@@ -354,7 +354,7 @@ export function createUpdateRouter(options: UpdateRouterOptions = {}): Router {
   function githubHeaders(accept: string): Record<string, string> {
     return {
       Accept: accept,
-      'User-Agent': 'freellmapi-update-checker',
+      'User-Agent': 'spadak-update-checker',
       'X-GitHub-Api-Version': '2022-11-28',
       ...(githubToken ? { Authorization: `Bearer ${githubToken}` } : {}),
     };
@@ -366,8 +366,8 @@ export function createUpdateRouter(options: UpdateRouterOptions = {}): Router {
   async function resolveIdentity(): Promise<Identity> {
     if (identity) return identity;
 
-    const environmentSha = validSha(env.FREELLMAPI_COMMIT_SHA);
-    const installMethod = env.FREELLMAPI_INSTALL_METHOD;
+    const environmentSha = validSha(env.SPADAK_COMMIT_SHA);
+    const installMethod = env.SPADAK_INSTALL_METHOD;
     if (installMethod === 'docker' || installMethod === 'desktop') {
       // Deliberately before the SHA check: a self-built image without
       // --build-arg has no embedded SHA, and it is still a container install.
@@ -433,7 +433,7 @@ export function createUpdateRouter(options: UpdateRouterOptions = {}): Router {
       const atomResponse = await fetchImpl(`https://github.com/${REPOSITORY}/commits/main.atom`, {
         headers: {
           Accept: 'application/atom+xml',
-          'User-Agent': 'freellmapi-update-checker',
+          'User-Agent': 'spadak-update-checker',
         },
         signal: AbortSignal.timeout(10_000),
       });

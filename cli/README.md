@@ -1,14 +1,14 @@
-# freellmapi
+# Spadak AI Gateway
 
-Point your coding agent at a [FreeLLMAPI](https://github.com/tashfeenahmed/freellmapi)
+Point your coding agent at a [Spadak AI Gateway](https://github.com/your-org/spadak-ai-gateway)
 gateway in one command. The generators read the models your server is actually
 serving and write the config file each tool expects.
 
 ```bash
-npx freellmapi setup-claude --url http://localhost:3001 --api-key <your-key>
+npx spadak setup-claude --url http://localhost:3001 --api-key <your-key>
 ```
 
-No install step, no account. The unified API key comes from your FreeLLMAPI
+No install step, no account. The unified API key comes from your Spadak AI Gateway
 dashboard (or the tray popover in the desktop app).
 
 ## Commands
@@ -47,7 +47,7 @@ dashboard (or the tray popover in the desktop app).
 | `--model ID` | Pin a specific model instead of the catalog default |
 | `--dry-run` | Print the diff and write nothing |
 
-`FREELLMAPI_URL` and `FREELLMAPI_API_KEY` work in place of `--url` / `--api-key`.
+`FREELLMAPI_URL` and `SPADAK_API_KEY` work in place of `--url` / `--api-key`.
 
 ## Safety
 
@@ -60,12 +60,12 @@ them into the child process environment for that run only.
 
 ## Requirements
 
-Node.js >= 20.18. A running FreeLLMAPI gateway
-([install guide](https://github.com/tashfeenahmed/freellmapi/blob/main/docs/en/install/01-install.md)).
+Node.js >= 20.18. A running Spadak AI Gateway gateway
+([install guide](https://github.com/your-org/spadak-ai-gateway/blob/main/docs/en/install/01-install.md)).
 
 ## Links
 
-- [Clients & coding agents guide](https://github.com/tashfeenahmed/freellmapi/blob/main/docs/en/clients/01-agent-clients.md)
-- [Issue tracker](https://github.com/tashfeenahmed/freellmapi/issues)
+- [Clients & coding agents guide](https://github.com/your-org/spadak-ai-gateway/blob/main/docs/en/clients/01-agent-clients.md)
+- [Issue tracker](https://github.com/your-org/spadak-ai-gateway/issues)
 
 MIT © Tashfeen Ahmed

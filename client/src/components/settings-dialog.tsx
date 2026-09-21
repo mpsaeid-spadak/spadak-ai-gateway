@@ -553,7 +553,7 @@ function PreviewSection({ state }: { state: CompressionState }) {
   )
 }
 
-const RELEASES_URL = 'https://github.com/tashfeenahmed/freellmapi/releases'
+const RELEASES_URL = 'https://github.com/your-org/spadak-ai-gateway/releases'
 
 function GeneralSection({ active }: { active: boolean }) {
   const { t } = useI18n()
@@ -651,7 +651,7 @@ function UpdateChecker({ active }: { active: boolean }) {
   // The desktop shell knows its own version outright; browser and container
   // installs ask the server, which resolves it from the release manifest.
   const shellVersion = typeof window !== 'undefined'
-    ? (window as { __FREEAPI_VERSION__?: string | null }).__FREEAPI_VERSION__ ?? null
+    ? (window as { __SPADAK_VERSION__?: string | null }).__SPADAK_VERSION__ ?? null
     : null
   const [statusInfo, setStatusInfo] = useState<UpdateStatusInfo | null>(null)
   const [checkResult, setCheckResult] = useState<UpdateCheckInfo | null>(null)
@@ -780,7 +780,7 @@ function UpdateChecker({ active }: { active: boolean }) {
   return (
     <>
       <Row
-        label="FreeLLMAPI"
+        label="Spadak AI Gateway"
         hint={t('settings.contactsGithub')}
         control={(
           <div className="flex items-center gap-2 text-sm tabular-nums">
@@ -937,14 +937,14 @@ function UpdateChecker({ active }: { active: boolean }) {
                   <div className="space-y-2">
                     <div className="flex gap-2 rounded-xl border bg-muted/30 p-3">
                       <SquareTerminal className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
-                      <code className="whitespace-pre-wrap break-all font-mono text-[11px]">git fetch https://github.com/tashfeenahmed/freellmapi.git main && git merge --ff-only FETCH_HEAD && npm ci && npm run build</code>
+                      <code className="whitespace-pre-wrap break-all font-mono text-[11px]">git fetch https://github.com/your-org/spadak-ai-gateway.git main && git merge --ff-only FETCH_HEAD && npm ci && npm run build</code>
                     </div>
                     <p className="text-[11px] text-muted-foreground">{t('settings.restartAfterUpdate')}</p>
                   </div>
                 )}
                 {(info.installation === 'desktop' || info.installation === 'unknown') && (
                   <a
-                    href="https://github.com/tashfeenahmed/freellmapi/releases/latest"
+                    href="https://github.com/your-org/spadak-ai-gateway/releases/latest"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 text-xs font-medium underline underline-offset-4"

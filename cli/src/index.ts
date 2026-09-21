@@ -57,7 +57,7 @@ function parseTimeout(value: string): number {
 export function parseArgs(argv: string[]): { command?: string; options: CliOptions } {
   const options: CliOptions = {
     url: process.env.FREELLMAPI_URL || 'http://localhost:3000',
-    apiKey: process.env.FREELLMAPI_API_KEY,
+    apiKey: process.env.SPADAK_API_KEY,
     profile: 'default',
     dryRun: false,
     args: [],
@@ -105,7 +105,7 @@ export function parseArgs(argv: string[]): { command?: string; options: CliOptio
 async function promptForKey(): Promise<string> {
   if (!process.stdin.isTTY) {
     throw new Error(
-      'No API key supplied. Pass --api-key or set FREELLMAPI_API_KEY.',
+      'No API key supplied. Pass --api-key or set SPADAK_API_KEY.',
     );
   }
   let muted = false;
@@ -121,7 +121,7 @@ async function promptForKey(): Promise<string> {
     terminal: true,
   });
   try {
-    const answer = rl.question('FreeLLMAPI unified API key: ');
+    const answer = rl.question('Spadak AI Gateway unified API key: ');
     muted = true;
     const value = (await answer).trim();
     muted = false;
@@ -147,7 +147,7 @@ async function catalog(url: string, apiKey: string, availableOnly = true): Promi
       : undefined;
     const reason = cause ?? (error instanceof Error ? error.message : String(error));
     throw new Error(
-      `Could not reach the FreeLLMAPI gateway at ${rootUrl(url)} (${reason}). `
+      `Could not reach the Spadak AI Gateway gateway at ${rootUrl(url)} (${reason}). `
       + 'Check that the server is running, or point the CLI at it with --url or FREELLMAPI_URL.',
     );
   }
@@ -215,7 +215,7 @@ export function resolvePinnedModel(
   // to be told which roster the verdict below came from.
   if (rosters.degradedReason) {
     warn(
-      `freellmapi: could not fetch the unfiltered model catalog (${rosters.degradedReason}). `
+      `spadak: could not fetch the unfiltered model catalog (${rosters.degradedReason}). `
       + `Checking '${requested}' against the available-only roster instead — a model that `
       + 'exists but is out of quota may be reported as unknown.\n',
     );
@@ -227,7 +227,7 @@ export function resolvePinnedModel(
   // we should make silently.
   if (resolved.unavailable) {
     warn(
-      `freellmapi: '${resolved.id}' is registered but not currently available `
+      `spadak: '${resolved.id}' is registered but not currently available `
       + '(out of quota, cooling down, or its key is disabled). Launching anyway.\n',
     );
   }
@@ -236,10 +236,10 @@ export function resolvePinnedModel(
 
 function help(): string {
   return [
-    'FreeLLMAPI coding-agent setup',
+    'Spadak AI Gateway coding-agent setup',
     '',
     'Usage:',
-    '  freellmapi <command> [--url URL] [--api-key KEY] [--profile NAME] [--model ID] [--dry-run]',
+    '  spadak <command> [--url URL] [--api-key KEY] [--profile NAME] [--model ID] [--dry-run]',
     '',
     'Commands:',
     ...tools.map(tool => `  ${tool.command.padEnd(17)} ${tool.name}`),
@@ -250,7 +250,7 @@ function help(): string {
     '  list              List supported coding agents',
     '',
     'Environment:',
-    '  FREELLMAPI_URL, FREELLMAPI_API_KEY',
+    '  FREELLMAPI_URL, SPADAK_API_KEY',
   ].join('\n');
 }
 
@@ -345,7 +345,7 @@ export function claudeLaunchEnv(
     if (!fs.existsSync(directory)) {
       throw new Error(
         `Claude profile '${options.profile}' has no configuration directory at ${directory}. `
-        + `Create it with: freellmapi setup-claude --profile ${options.profile}`,
+        + `Create it with: spadak setup-claude --profile ${options.profile}`,
       );
     }
     env.CLAUDE_CONFIG_DIR = directory;
@@ -389,13 +389,13 @@ async function launchClaude(options: CliOptions): Promise<number> {
 
 export function codexArgs(url: string, selected: string): string[] {
   return [
-    '-c', 'model_provider="freellmapi"',
+    '-c', 'model_provider="spadak"',
     '-c', `model=${JSON.stringify(selected)}`,
-    '-c', 'model_providers.freellmapi.name="FreeLLMAPI"',
-    '-c', `model_providers.freellmapi.base_url=${JSON.stringify(`${rootUrl(url)}/v1`)}`,
-    '-c', 'model_providers.freellmapi.wire_api="responses"',
-    '-c', 'model_providers.freellmapi.env_key="FREELLMAPI_API_KEY"',
-    '-c', 'model_providers.freellmapi.requires_openai_auth=false',
+    '-c', 'model_providers.spadak.name="Spadak AI Gateway"',
+    '-c', `model_providers.spadak.base_url=${JSON.stringify(`${rootUrl(url)}/v1`)}`,
+    '-c', 'model_providers.spadak.wire_api="responses"',
+    '-c', 'model_providers.spadak.env_key="SPADAK_API_KEY"',
+    '-c', 'model_providers.spadak.requires_openai_auth=false',
   ];
 }
 
@@ -406,7 +406,7 @@ async function launchCodex(options: CliOptions): Promise<number> {
     resolvePinnedModel(options.model, rosters)
     ?? resolveLaunchModel(undefined, rosters.available, rosters.full)
   ).id;
-  const env = { ...process.env, FREELLMAPI_API_KEY: apiKey };
+  const env = { ...process.env, SPADAK_API_KEY: apiKey };
   const args = codexArgs(options.url, selected);
   return runChild('codex', args, env);
 }
@@ -468,7 +468,7 @@ if (isDirectExecution()) {
   main().then(
     code => { process.exitCode = code; },
     error => {
-      process.stderr.write(`freellmapi: ${error instanceof Error ? error.message : String(error)}\n`);
+      process.stderr.write(`spadak: ${error instanceof Error ? error.message : String(error)}\n`);
       process.exitCode = 1;
     },
   );

@@ -73,7 +73,7 @@ ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 EXPOSE 3001
 
 # No VOLUME for /app/server/data on purpose. Persistence is the deployment's
-# job — docker-compose.yml maps the named `freellmapi-data` volume there, and a
+# job — docker-compose.yml maps the named `spadak-data` volume there, and a
 # plain `docker run` takes -v. Declaring it here instead creates an ANONYMOUS
 # volume on every container that doesn't override it: PaaS runtimes that build
 # from the Dockerfile (Railway, Render, Coolify, Dokploy, CapRover) then either

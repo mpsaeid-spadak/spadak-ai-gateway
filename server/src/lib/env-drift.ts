@@ -16,7 +16,7 @@ const KNOWN_UNDOCUMENTED_ENV = new Set([
   'CATALOG_BASE_URL',
   'CATALOG_PUBKEY',
   'CATALOG_SYNC_DISABLED',
-  'FREEAPI_DB_BACKUP_TARGET',
+  'SPADAK_DB_BACKUP_TARGET',
   'PREMIUM_SITE_URL',
 ]);
 
@@ -37,7 +37,7 @@ export interface EnvDriftPaths {
 
 export function defaultEnvDriftPaths(): Required<EnvDriftPaths> {
   return {
-    envPath: process.env.FREEAPI_ENV_PATH ?? path.join(REPO_ROOT, '.env'),
+    envPath: process.env.SPADAK_ENV_PATH ?? path.join(REPO_ROOT, '.env'),
     examplePath: path.join(REPO_ROOT, '.env.example'),
   };
 }

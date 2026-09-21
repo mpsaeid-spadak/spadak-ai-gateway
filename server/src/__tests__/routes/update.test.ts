@@ -109,7 +109,7 @@ describe('Update API', () => {
         checkedAt: '2026-07-28T14:00:00.000Z',
       });
       expect(fetchMock).toHaveBeenCalledWith(
-        `https://api.github.com/repos/tashfeenahmed/freellmapi/compare/${LOCAL_SHA}...main`,
+        `https://api.github.com/repos/your-org/spadak-ai-gateway/compare/${LOCAL_SHA}...main`,
         expect.any(Object),
       );
     });
@@ -120,8 +120,8 @@ describe('Update API', () => {
       const execMock = vi.fn(async () => ({ stdout: `${REMOTE_SHA}\n` }));
       const { app } = createTestApp({
         env: {
-          FREELLMAPI_COMMIT_SHA: LOCAL_SHA.toUpperCase(),
-          FREELLMAPI_INSTALL_METHOD: 'docker',
+          SPADAK_COMMIT_SHA: LOCAL_SHA.toUpperCase(),
+          SPADAK_INSTALL_METHOD: 'docker',
         },
         fetch: fetchMock,
         execFile: execMock,
@@ -166,13 +166,13 @@ describe('Update API', () => {
         if (String(url).includes('/releases/latest')) {
           return response({
             tag_name: 'v0.11.0',
-            html_url: 'https://github.com/tashfeenahmed/freellmapi/releases/tag/v0.11.0',
+            html_url: 'https://github.com/your-org/spadak-ai-gateway/releases/tag/v0.11.0',
           });
         }
         return response(compareBody('identical'));
       });
       const { app } = createTestApp({
-        env: { FREELLMAPI_INSTALL_METHOD: 'desktop', FREELLMAPI_COMMIT_SHA: LOCAL_SHA },
+        env: { SPADAK_INSTALL_METHOD: 'desktop', SPADAK_COMMIT_SHA: LOCAL_SHA },
         fetch: fetchMock,
       });
 
@@ -180,7 +180,7 @@ describe('Update API', () => {
 
       expect(result.body).toMatchObject({ status: 'current', installation: 'desktop' });
       expect(fetchMock).toHaveBeenCalledWith(
-        `https://api.github.com/repos/tashfeenahmed/freellmapi/compare/${LOCAL_SHA}...v0.11.0`,
+        `https://api.github.com/repos/your-org/spadak-ai-gateway/compare/${LOCAL_SHA}...v0.11.0`,
         expect.any(Object),
       );
       // 'identical' against the tag: no update offered for untagged main commits.
@@ -192,13 +192,13 @@ describe('Update API', () => {
         if (String(url).includes('/releases/latest')) {
           return response({
             tag_name: 'v0.12.0',
-            html_url: 'https://github.com/tashfeenahmed/freellmapi/releases/tag/v0.12.0',
+            html_url: 'https://github.com/your-org/spadak-ai-gateway/releases/tag/v0.12.0',
           });
         }
         return response(compareBody('ahead'));
       });
       const { app } = createTestApp({
-        env: { FREELLMAPI_INSTALL_METHOD: 'desktop', FREELLMAPI_COMMIT_SHA: LOCAL_SHA },
+        env: { SPADAK_INSTALL_METHOD: 'desktop', SPADAK_COMMIT_SHA: LOCAL_SHA },
         fetch: fetchMock,
       });
 
@@ -213,7 +213,7 @@ describe('Update API', () => {
         return response(compareBody('ahead'));
       });
       const { app } = createTestApp({
-        env: { FREELLMAPI_INSTALL_METHOD: 'desktop', FREELLMAPI_COMMIT_SHA: LOCAL_SHA },
+        env: { SPADAK_INSTALL_METHOD: 'desktop', SPADAK_COMMIT_SHA: LOCAL_SHA },
         fetch: fetchMock,
       });
 
@@ -229,13 +229,13 @@ describe('Update API', () => {
         if (String(url).includes('/releases/latest')) {
           return response({
             tag_name: 'v0.11.0',
-            html_url: 'https://github.com/tashfeenahmed/freellmapi/releases/tag/v0.11.0',
+            html_url: 'https://github.com/your-org/spadak-ai-gateway/releases/tag/v0.11.0',
           });
         }
         return response({ message: 'rate limited' }, 403);
       });
       const { app } = createTestApp({
-        env: { FREELLMAPI_INSTALL_METHOD: 'desktop', FREELLMAPI_COMMIT_SHA: LOCAL_SHA },
+        env: { SPADAK_INSTALL_METHOD: 'desktop', SPADAK_COMMIT_SHA: LOCAL_SHA },
         fetch: fetchMock,
       });
 
@@ -298,7 +298,7 @@ describe('Update API', () => {
       });
       expect(fetchMock).toHaveBeenNthCalledWith(
         2,
-        'https://github.com/tashfeenahmed/freellmapi/commits/main.atom',
+        'https://github.com/your-org/spadak-ai-gateway/commits/main.atom',
         expect.any(Object),
       );
     });
@@ -401,7 +401,7 @@ describe('Update API', () => {
     it('resolves Git identity lazily from the current working directory', async () => {
       const execMock = vi.fn(async () => ({ stdout: `${LOCAL_SHA}\n` }));
       const { app } = createTestApp({
-        env: { FREELLMAPI_COMMIT_SHA: 'invalid' },
+        env: { SPADAK_COMMIT_SHA: 'invalid' },
         execFile: execMock,
       });
       expect(execMock).not.toHaveBeenCalled();
@@ -453,7 +453,7 @@ describe('Update API', () => {
       const fetchMock = vi.fn();
       const execMock = vi.fn(async () => ({ stdout: `${LOCAL_SHA}\n` }));
       const { app } = createTestApp({
-        env: { FREELLMAPI_INSTALL_METHOD: 'docker' },
+        env: { SPADAK_INSTALL_METHOD: 'docker' },
         fetch: fetchMock,
         execFile: execMock,
       });

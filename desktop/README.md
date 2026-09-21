@@ -1,11 +1,11 @@
-# FreeLLMAPI Desktop
+# Spadak AI Gateway Desktop
 
-Lean Electron menu-bar app for [freellmapi](https://github.com/tashfeenahmed/freellmapi):
+Lean Electron menu-bar app for [Spadak AI Gateway](https://github.com/your-org/spadak-ai-gateway):
 runs the whole router locally on `127.0.0.1:31415`, with a dark-glass tray
 popover (live 24h request chart, quick stats, copy URL/key) and the full
 dashboard in a native-feeling window.
 
-Download an installer from [Releases](https://github.com/tashfeenahmed/freellmapi/releases/latest),
+Download an installer from [Releases](https://github.com/your-org/spadak-ai-gateway/releases/latest),
 or build against the server and client sources in this checkout.
 
 On macOS, choose **arm64** for Apple Silicon (M-series) or **x64** for Intel.
@@ -26,9 +26,9 @@ From the **repo root** (one-time client build + package):
 ```bash
 npm install
 npm install --prefix desktop  # install desktop dependencies
-npm run desktop:dist          # macOS → desktop/dist-electron/FreeLLMAPI-…-arm64.dmg
-npm run desktop:dist:mac:x64  # Intel Mac → desktop/dist-electron/FreeLLMAPI-…-x64.dmg
-npm run desktop:dist:win      # Windows → desktop/dist-electron/FreeLLMAPI-…-x64 installer
+npm run desktop:dist          # macOS → desktop/dist-electron/Spadak AI Gateway-…-arm64.dmg
+npm run desktop:dist:mac:x64  # Intel Mac → desktop/dist-electron/Spadak AI Gateway-…-x64.dmg
+npm run desktop:dist:win      # Windows → desktop/dist-electron/Spadak AI Gateway-…-x64 installer
 ```
 
 Both Mac commands also produce a ZIP. Prefer building on the matching Mac
@@ -55,17 +55,17 @@ npm run dev              # bundle + launch
 
 The dev run serves the repo's own `client/dist` — build it first
 (`npm run build -w client` from the root) or use `npm run desktop:dev` from
-the root, which does both. `FREEAPI_REPO=/path/to/checkout` overrides the
+the root, which does both. `SPADAK_REPO=/path/to/checkout` overrides the
 client/server source location if you ever need a different one.
 
-UI iteration helpers (dev only): `FREEAPI_SHOT=1 npx electron .` captures the
-popover + dashboard to /tmp and quits; `FREEAPI_SHOT=hold` pins the popover
+UI iteration helpers (dev only): `SPADAK_SHOT=1 npx electron .` captures the
+popover + dashboard to /tmp and quits; `SPADAK_SHOT=hold` pins the popover
 open for real-screen captures.
 
 ## Notes
 
-- DB + config live in `~/Library/Application Support/FreeLLMAPI/` (macOS) /
-  `%APPDATA%/FreeLLMAPI/` (Windows).
+- DB + config live in `~/Library/Application Support/Spadak AI Gateway/` (macOS) /
+  `%APPDATA%/Spadak AI Gateway/` (Windows).
 - The server binds loopback only; default port 31415, scan-up on conflict,
   resolved port persisted.
 - Do not run plain `npm rebuild` here — it rebuilds better-sqlite3 for the

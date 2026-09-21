@@ -6,24 +6,24 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { backupDbNow, parseHuggingFaceTarget, restoreDbBackupIfNeeded } from '../../lib/db-backup.js';
 import { aclEntries } from '../helpers/acl.js';
 
-const ORIGINAL_BACKUP_PATH = process.env.FREEAPI_DB_BACKUP_PATH;
-const ORIGINAL_BACKUP_TARGET = process.env.FREEAPI_DB_BACKUP_TARGET;
-const ORIGINAL_BACKUP_URL = process.env.FREEAPI_DB_BACKUP_URL;
-const ORIGINAL_BACKUP_KEY = process.env.FREEAPI_DB_BACKUP_KEY;
-const ORIGINAL_BACKUP_TOKEN = process.env.FREEAPI_DB_BACKUP_TOKEN;
+const ORIGINAL_BACKUP_PATH = process.env.SPADAK_DB_BACKUP_PATH;
+const ORIGINAL_BACKUP_TARGET = process.env.SPADAK_DB_BACKUP_TARGET;
+const ORIGINAL_BACKUP_URL = process.env.SPADAK_DB_BACKUP_URL;
+const ORIGINAL_BACKUP_KEY = process.env.SPADAK_DB_BACKUP_KEY;
+const ORIGINAL_BACKUP_TOKEN = process.env.SPADAK_DB_BACKUP_TOKEN;
 const ORIGINAL_ENCRYPTION_KEY = process.env.ENCRYPTION_KEY;
 
 function restoreEnv() {
-  if (ORIGINAL_BACKUP_PATH === undefined) delete process.env.FREEAPI_DB_BACKUP_PATH;
-  else process.env.FREEAPI_DB_BACKUP_PATH = ORIGINAL_BACKUP_PATH;
-  if (ORIGINAL_BACKUP_TARGET === undefined) delete process.env.FREEAPI_DB_BACKUP_TARGET;
-  else process.env.FREEAPI_DB_BACKUP_TARGET = ORIGINAL_BACKUP_TARGET;
-  if (ORIGINAL_BACKUP_URL === undefined) delete process.env.FREEAPI_DB_BACKUP_URL;
-  else process.env.FREEAPI_DB_BACKUP_URL = ORIGINAL_BACKUP_URL;
-  if (ORIGINAL_BACKUP_KEY === undefined) delete process.env.FREEAPI_DB_BACKUP_KEY;
-  else process.env.FREEAPI_DB_BACKUP_KEY = ORIGINAL_BACKUP_KEY;
-  if (ORIGINAL_BACKUP_TOKEN === undefined) delete process.env.FREEAPI_DB_BACKUP_TOKEN;
-  else process.env.FREEAPI_DB_BACKUP_TOKEN = ORIGINAL_BACKUP_TOKEN;
+  if (ORIGINAL_BACKUP_PATH === undefined) delete process.env.SPADAK_DB_BACKUP_PATH;
+  else process.env.SPADAK_DB_BACKUP_PATH = ORIGINAL_BACKUP_PATH;
+  if (ORIGINAL_BACKUP_TARGET === undefined) delete process.env.SPADAK_DB_BACKUP_TARGET;
+  else process.env.SPADAK_DB_BACKUP_TARGET = ORIGINAL_BACKUP_TARGET;
+  if (ORIGINAL_BACKUP_URL === undefined) delete process.env.SPADAK_DB_BACKUP_URL;
+  else process.env.SPADAK_DB_BACKUP_URL = ORIGINAL_BACKUP_URL;
+  if (ORIGINAL_BACKUP_KEY === undefined) delete process.env.SPADAK_DB_BACKUP_KEY;
+  else process.env.SPADAK_DB_BACKUP_KEY = ORIGINAL_BACKUP_KEY;
+  if (ORIGINAL_BACKUP_TOKEN === undefined) delete process.env.SPADAK_DB_BACKUP_TOKEN;
+  else process.env.SPADAK_DB_BACKUP_TOKEN = ORIGINAL_BACKUP_TOKEN;
   if (ORIGINAL_ENCRYPTION_KEY === undefined) delete process.env.ENCRYPTION_KEY;
   else process.env.ENCRYPTION_KEY = ORIGINAL_ENCRYPTION_KEY;
 }
@@ -36,7 +36,7 @@ describe('encrypted SQLite backup', () => {
     const dbPath = path.join(dir, 'freeapi.db');
     const backupPath = path.join(dir, 'backup.bin');
     process.env.ENCRYPTION_KEY = 'a'.repeat(64);
-    process.env.FREEAPI_DB_BACKUP_PATH = backupPath;
+    process.env.SPADAK_DB_BACKUP_PATH = backupPath;
 
     const db = new Database(dbPath);
     db.exec('CREATE TABLE items (name TEXT NOT NULL); INSERT INTO items (name) VALUES (\'survived\')');
@@ -75,7 +75,7 @@ describe('backup file permissions', () => {
     const dbPath = path.join(dir, 'freeapi.db');
     const backupPath = path.join(dir, 'backup.bin');
     process.env.ENCRYPTION_KEY = 'a'.repeat(64);
-    process.env.FREEAPI_DB_BACKUP_PATH = backupPath;
+    process.env.SPADAK_DB_BACKUP_PATH = backupPath;
 
     const db = new Database(dbPath);
     db.exec('CREATE TABLE items (name TEXT NOT NULL)');
@@ -185,8 +185,8 @@ describe('Hugging Face backup target', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'freeapi-hf-backup-'));
     const dbPath = seedDb(dir);
     process.env.ENCRYPTION_KEY = 'a'.repeat(64);
-    process.env.FREEAPI_DB_BACKUP_TARGET = TARGET;
-    process.env.FREEAPI_DB_BACKUP_TOKEN = 'hf_token';
+    process.env.SPADAK_DB_BACKUP_TARGET = TARGET;
+    process.env.SPADAK_DB_BACKUP_TOKEN = 'hf_token';
 
     let stored = '';
     const fetchMock = vi.fn(async (url: string, init: RequestInit) => {
@@ -236,15 +236,15 @@ describe('Hugging Face backup target', () => {
     const dbPath = seedDb(dir);
     const blobPath = path.join(dir, 'backup.bin');
     process.env.ENCRYPTION_KEY = 'a'.repeat(64);
-    process.env.FREEAPI_DB_BACKUP_PATH = blobPath;
+    process.env.SPADAK_DB_BACKUP_PATH = blobPath;
 
     const db = new Database(dbPath);
     await backupDbNow(db, dbPath);
     db.close();
     const raw = fs.readFileSync(blobPath);
 
-    delete process.env.FREEAPI_DB_BACKUP_PATH;
-    process.env.FREEAPI_DB_BACKUP_TARGET = TARGET;
+    delete process.env.SPADAK_DB_BACKUP_PATH;
+    process.env.SPADAK_DB_BACKUP_TARGET = TARGET;
     vi.stubGlobal('fetch', vi.fn(async () => new Response(raw, { status: 200 })));
 
     fs.rmSync(dbPath);
@@ -258,14 +258,14 @@ describe('Hugging Face backup target', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'freeapi-hf-token-'));
     const dbPath = seedDb(dir);
     process.env.ENCRYPTION_KEY = 'a'.repeat(64);
-    process.env.FREEAPI_DB_BACKUP_TARGET = TARGET;
-    delete process.env.FREEAPI_DB_BACKUP_TOKEN;
+    process.env.SPADAK_DB_BACKUP_TARGET = TARGET;
+    delete process.env.SPADAK_DB_BACKUP_TOKEN;
 
     const fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
 
     const db = new Database(dbPath);
-    await expect(backupDbNow(db, dbPath)).rejects.toThrow(/FREEAPI_DB_BACKUP_TOKEN is required/);
+    await expect(backupDbNow(db, dbPath)).rejects.toThrow(/SPADAK_DB_BACKUP_TOKEN is required/);
     db.close();
     expect(fetchMock).not.toHaveBeenCalled();
   });
@@ -274,8 +274,8 @@ describe('Hugging Face backup target', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'freeapi-hf-error-'));
     const dbPath = seedDb(dir);
     process.env.ENCRYPTION_KEY = 'a'.repeat(64);
-    process.env.FREEAPI_DB_BACKUP_TARGET = TARGET;
-    process.env.FREEAPI_DB_BACKUP_TOKEN = 'hf_token';
+    process.env.SPADAK_DB_BACKUP_TARGET = TARGET;
+    process.env.SPADAK_DB_BACKUP_TOKEN = 'hf_token';
     vi.stubGlobal('fetch', vi.fn(async () => new Response('repo not found', { status: 404 })));
 
     const db = new Database(dbPath);
@@ -287,8 +287,8 @@ describe('Hugging Face backup target', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'freeapi-http-backup-'));
     const dbPath = seedDb(dir);
     process.env.ENCRYPTION_KEY = 'a'.repeat(64);
-    process.env.FREEAPI_DB_BACKUP_TARGET = 'https://storage.example.com/freeapi.db.enc';
-    process.env.FREEAPI_DB_BACKUP_TOKEN = 'plain_token';
+    process.env.SPADAK_DB_BACKUP_TARGET = 'https://storage.example.com/freeapi.db.enc';
+    process.env.SPADAK_DB_BACKUP_TOKEN = 'plain_token';
 
     const fetchMock = vi.fn(async () => new Response('', { status: 200 }));
     vi.stubGlobal('fetch', fetchMock);

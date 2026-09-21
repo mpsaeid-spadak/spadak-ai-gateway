@@ -16,7 +16,7 @@
 
 ## OpenAI-compatible clients
 
-Any client that can target an OpenAI-compatible base URL can use FreeLLMAPI:
+Any client that can target an OpenAI-compatible base URL can use Spadak AI Gateway:
 
 - **LangChain, LlamaIndex, official OpenAI SDKs**: set `base_url` to
   `http://localhost:3001/v1` and use the unified key from the dashboard.
@@ -28,10 +28,10 @@ Any client that can target an OpenAI-compatible base URL can use FreeLLMAPI:
 Use the generator instead of hand-editing a client configuration:
 
 ```bash
-export FREELLMAPI_API_KEY=<unified-key>   # or pass --api-key on each command
-npx freellmapi setup-claude --url http://localhost:3001 --dry-run
-npx freellmapi setup-claude --url http://localhost:3001
-npx freellmapi setup-dsh --url http://localhost:3001 --api-key <unified-key>
+export SPADAK_API_KEY=<unified-key>   # or pass --api-key on each command
+npx spadak setup-claude --url http://localhost:3001 --dry-run
+npx spadak setup-claude --url http://localhost:3001
+npx spadak setup-dsh --url http://localhost:3001 --api-key <unified-key>
 ```
 
 `--dry-run` prints a diff. Real writes merge with the existing configuration
@@ -72,32 +72,32 @@ base URL to include `/v1`.
 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) keeps
 every provider as a route under `llm-pi-ai.providers` in
 `$DSH_HOME/settings.yaml` (`~/.dsh` by default). `setup-dsh` adds a
-`freellmapi` route there — `api: openai-completions`, the gateway's `/v1`
+`spadak` route there — `api: openai-completions`, the gateway's `/v1`
 base URL, and the live catalog as the route's `models` list, which DSH
 requires for a provider its installed catalog does not ship — and makes
-`freellmapi/auto` the default model. The key goes into `$DSH_HOME/.env`
-(mode 0600) as `FREELLMAPI_API_KEY`, the environment layer DSH reads on its
+`spadak/auto` the default model. The key goes into `$DSH_HOME/.env`
+(mode 0600) as `SPADAK_API_KEY`, the environment layer DSH reads on its
 own, so nothing needs exporting. Both writes are structural merges: other
 routes, comments, and settings in the file are left as they were.
 
 ```bash
-npx freellmapi setup-dsh --url http://localhost:3001 --api-key <unified-key>
+npx spadak setup-dsh --url http://localhost:3001 --api-key <unified-key>
 npx @deepseek-ai/dsh web
 ```
 
 Settings are hot-reloaded, so a running `dsh` uses the route on its next
-request. `--profile <name>` adds a second route (`freellmapi-<name>`) without
+request. `--profile <name>` adds a second route (`spadak-<name>`) without
 changing the default model; `--model <id>` pins the default. Routes are
 declared text-only — add `input: [text, image]` to a model entry under
-`freellmapi.models` to send it images. `DSH_HOME` is honoured when set.
+`spadak.models` to send it images. `DSH_HOME` is honoured when set.
 
 ### MiMo Code (`mimo`)
 
 [MiMo Code](https://mimo.xiaomi.com/mimocode) is an OpenCode derivative, so it
 takes any OpenAI-compatible endpoint as a custom entry under `provider` — an
 `npm` package to speak with (`@ai-sdk/openai-compatible`), the credentials in
-`options`, and a `models` map. `setup-mimo` writes that entry as `freellmapi`
-and names `freellmapi/<model>` as the default `model`.
+`options`, and a `models` map. `setup-mimo` writes that entry as `spadak`
+and names `spadak/<model>` as the default `model`.
 
 The file is `config.json` in MiMo's own global config directory:
 `$XDG_CONFIG_HOME/mimocode` (`~/.config/mimocode` on macOS and Linux), or
@@ -108,12 +108,12 @@ generated file is the weakest layer and anything you hand-write in
 providers and settings already in `config.json` are left as they were.
 
 ```bash
-npx freellmapi setup-mimo --url http://localhost:3001
-export FREELLMAPI_API_KEY=<unified-key>
+npx spadak setup-mimo --url http://localhost:3001
+export SPADAK_API_KEY=<unified-key>
 mimo
 ```
 
-The key is referenced as `{env:FREELLMAPI_API_KEY}`, MiMo's own substitution
+The key is referenced as `{env:SPADAK_API_KEY}`, MiMo's own substitution
 syntax, so it stays out of the config file. There is no `MIMOCODE_API_KEY` or
 `MIMOCODE_BASE_URL`: MiMo's environment variables locate resources and toggle
 features, they are not a general fallback for config fields. Each model is
@@ -126,15 +126,15 @@ requires, both taken from the live catalog.
 coding agent, written in Rust. It reads `~/.atomcode/config.toml`, where a
 root `default_provider` key names one `[providers.<id>]` table and
 `type = "openai"` makes that table speak the OpenAI-compatible wire.
-`setup-atomcode` writes a `[providers.freellmapi]` table — `base_url` on the
+`setup-atomcode` writes a `[providers.spadak]` table — `base_url` on the
 gateway's `/v1`, the unified key as `api_key`, the chosen model and its
 `context_window` from the live catalog — and sets `default_provider` to it.
 The write is a structural merge: the root key is placed above any existing
-tables, only the `freellmapi` table is replaced, and other `[providers.*]`
+tables, only the `spadak` table is replaced, and other `[providers.*]`
 tables and settings in the file are left as they were.
 
 ```bash
-npx freellmapi setup-atomcode --url http://localhost:3001 --api-key <unified-key>
+npx spadak setup-atomcode --url http://localhost:3001 --api-key <unified-key>
 atomcode
 ```
 
@@ -150,29 +150,29 @@ that answers on WhatsApp, Telegram, Discord and the other channels its
 gateway connects to. It reads one JSON5 document, `~/.openclaw/openclaw.json`,
 and every model endpoint is an entry under `models.providers`; a provider its
 bundled catalog does not know must spell out `baseUrl`, `api` and a non-empty
-`models` list. `setup-openclaw` writes a `freellmapi` provider there —
+`models` list. `setup-openclaw` writes a `spadak` provider there —
 `api: openai-completions`, the gateway's `/v1` base URL, the live catalog as
-its `models` list — and makes `freellmapi/auto` the default model under
+its `models` list — and makes `spadak/auto` the default model under
 `agents.defaults.model.primary`. The key is referenced as
-`${FREELLMAPI_API_KEY}`, OpenClaw's own substitution, and the value goes into
+`${SPADAK_API_KEY}`, OpenClaw's own substitution, and the value goes into
 `~/.openclaw/.env` (mode 0600), the global env file OpenClaw loads on its own,
 so nothing needs exporting. Both writes are structural merges: other
 providers, `fallbacks` on the default model, and every other setting in the
 file are left as they were.
 
 ```bash
-npx freellmapi setup-openclaw --url http://localhost:3001 --api-key <unified-key>
+npx spadak setup-openclaw --url http://localhost:3001 --api-key <unified-key>
 npm install -g openclaw@latest --allow-scripts=openclaw
-openclaw agent exec --model freellmapi/auto "Say hello"   # no gateway daemon needed
+openclaw agent exec --model spadak/auto "Say hello"   # no gateway daemon needed
 ```
 
 A running `openclaw gateway` needs a restart to pick the change up.
-`--profile <name>` adds a second provider (`freellmapi-<name>`) without
+`--profile <name>` adds a second provider (`spadak-<name>`) without
 changing the default model; `--model <id>` pins the default. OpenClaw sends a
 bare SDK user agent to custom endpoints, so the provider carries a static
 `User-Agent: openclaw` header — that is what lights the "seen recently" badge
 on the Agents page. Models are declared text-only; add `input: ["text",
-"image"]` to a model entry under `models.providers.freellmapi.models` to send
+"image"]` to a model entry under `models.providers.spadak.models` to send
 it images. `OPENCLAW_CONFIG_PATH`, `OPENCLAW_STATE_DIR` and `OPENCLAW_HOME` are
 honoured when set.
 
@@ -187,21 +187,21 @@ so a custom endpoint has to be declared in the `model` block. `setup-hermes`
 writes that block — `provider: custom`, `api_mode: chat_completions`, the
 gateway's `/v1` as `base_url`, the chosen model as `default` with its
 `context_length` from the live catalog — and references the key as
-`api_key: "${FREELLMAPI_API_KEY}"`, Hermes's own substitution, with the value
+`api_key: "${SPADAK_API_KEY}"`, Hermes's own substitution, with the value
 in `~/.hermes/.env` (mode 0600), which Hermes loads on its own. A fresh
 install ships `model: ""`, the "not configured" sentinel; replacing it is
 exactly what `hermes setup` would do, and it is what lets a headless first
 run skip the wizard. Every other key in the file is left as it was.
 
 ```bash
-npx freellmapi setup-hermes --url http://localhost:3001 --api-key <unified-key>
+npx spadak setup-hermes --url http://localhost:3001 --api-key <unified-key>
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --skip-setup
 hermes -z "Say hello"
 ```
 
 A running `hermes gateway` needs a restart to pick the change up.
-`--profile <name>` adds a `providers.freellmapi-<name>` entry instead —
-picked inside a chat with `/model custom:freellmapi-<name>:auto` — and leaves
+`--profile <name>` adds a `providers.spadak-<name>` entry instead —
+picked inside a chat with `/model custom:spadak-<name>:auto` — and leaves
 the default model alone; `--model <id>` pins the default. Hermes sends a bare
 SDK user agent to custom endpoints, so the block carries
 `default_headers: { User-Agent: hermes-agent }`, which is what the Agents
@@ -210,24 +210,24 @@ page's "seen recently" badge keys on. `HERMES_HOME` is honoured when set.
 ### QwenPaw
 
 [QwenPaw](https://github.com/agentscope-ai/QwenPaw) supports custom providers
-that use the OpenAI `chat.completions` API. Start FreeLLMAPI, create or copy a
+that use the OpenAI `chat.completions` API. Start Spadak AI Gateway, create or copy a
 unified key from its dashboard, then open **Settings → Models** in the QwenPaw
 Console:
 
 1. Under **Providers**, choose **Add Provider**.
-2. Give it a **Provider ID** such as `freellmapi` and a **Provider Name** such
-   as `FreeLLMAPI`, and set the API compatibility mode to OpenAI
+2. Give it a **Provider ID** such as `spadak` and a **Provider Name** such
+   as `Spadak AI Gateway`, and set the API compatibility mode to OpenAI
    `chat.completions`.
 3. Open the new provider's settings and set **Base URL** to
-   `http://localhost:3001/v1` and **API Key** to your FreeLLMAPI unified key.
+   `http://localhost:3001/v1` and **API Key** to your Spadak AI Gateway unified key.
 4. On the provider's models page, add a model. Use `auto` as the **Model ID**
-   to let FreeLLMAPI route the request, or copy a current id from
+   to let Spadak AI Gateway route the request, or copy a current id from
    `GET http://localhost:3001/v1/models`.
 5. Save, then pick the model as the default (or per chat) and send a test
    message.
 
 If QwenPaw runs in a container, `localhost` refers to that container rather
-than the host running FreeLLMAPI. Use a hostname or host-gateway address that
+than the host running Spadak AI Gateway. Use a hostname or host-gateway address that
 the QwenPaw container can reach, while keeping the `/v1` suffix. Do not put the
 unified key in a URL, screenshot, or issue report. See QwenPaw's
 [official model configuration guide](https://qwenpaw.agentscope.io/docs/models)
@@ -239,7 +239,7 @@ Gemini CLI and Gemini-lineage clients can speak Google's wire format directly:
 
 ```bash
 export GOOGLE_GEMINI_BASE_URL=http://localhost:3001
-export GEMINI_API_KEY=freellmapi-your-unified-key
+export GEMINI_API_KEY=spadak-your-unified-key
 gemini
 ```
 
@@ -307,28 +307,28 @@ While it is off, every verb on `/mcp` answers `403` with a JSON-RPC error saying
 For Claude Code:
 
 ```bash
-claude mcp add --transport http freellmapi http://localhost:3001/mcp \
-  --header "Authorization: Bearer freellmapi-your-unified-key"
+claude mcp add --transport http spadak http://localhost:3001/mcp \
+  --header "Authorization: Bearer spadak-your-unified-key"
 ```
 
 Any MCP client that speaks Streamable HTTP works the same way: point it at `/mcp` with the
 unified key as a Bearer token.
 
-FreeLLMAPI is local-first and single-user by design. Your provider keys stay in
+Spadak AI Gateway is local-first and single-user by design. Your provider keys stay in
 your SQLite database, encrypted at rest, and requests go from your machine to the
 upstream providers you enabled.
 
 ## VS Code ghost-text autocomplete (Continue)
 
-FreeLLMAPI exposes `/v1/completions` for editor autocomplete clients that send legacy OpenAI prompt/suffix requests. Example Continue config:
+Spadak AI Gateway exposes `/v1/completions` for editor autocomplete clients that send legacy OpenAI prompt/suffix requests. Example Continue config:
 
 ```yaml
 models:
-  - name: FreeLLMAPI Autocomplete
+  - name: Spadak AI Gateway Autocomplete
     provider: openai
     model: auto
     apiBase: http://localhost:3001/v1
-    apiKey: freellmapi-your-unified-key
+    apiKey: spadak-your-unified-key
     useLegacyCompletionsEndpoint: true
     roles:
       - autocomplete
@@ -336,10 +336,10 @@ models:
 
 ## Context Handoff
 
-When FreeLLMAPI falls over to a different model mid-conversation (quota, rate limit, cooldown), the new model has no idea it is picking up someone else's task. **Context handoff** adds a single compact `system` message to the outbound request that tells the new model exactly that:
+When Spadak AI Gateway falls over to a different model mid-conversation (quota, rate limit, cooldown), the new model has no idea it is picking up someone else's task. **Context handoff** adds a single compact `system` message to the outbound request that tells the new model exactly that:
 
 ```
-FreeLLMAPI context handoff:
+Spadak AI Gateway context handoff:
 You are taking over an ongoing conversation from another model (groq:llama-3 → google:gemini-flash).
 Continue the user's task using the conversation context already provided in this request.
 Do not restart the task, re-ask already answered setup questions, or discard prior tool results.
@@ -364,4 +364,4 @@ FREELLMAPI_CONTEXT_HANDOFF=on_model_switch
 - Session key: `X-Session-Id` header if present, otherwise SHA-1 of the first user message (same as sticky sessions).
 - Storage is in-memory only. Nothing is written to disk or logged.
 
-> **Important:** Context Handoff improves continuity for conversations routed through FreeLLMAPI. It cannot recover provider-internal hidden state or messages that were never sent to the proxy.
+> **Important:** Context Handoff improves continuity for conversations routed through Spadak AI Gateway. It cannot recover provider-internal hidden state or messages that were never sent to the proxy.

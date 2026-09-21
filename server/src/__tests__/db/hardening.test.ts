@@ -12,8 +12,8 @@ const itWindows = it.skipIf(!isWindows);
 const created: string[] = [];
 const createdDirs: string[] = [];
 
-const ORIGINAL_DIR_HARDENING = process.env.FREEAPI_DB_DIR_HARDENING;
-const ORIGINAL_DB_PATH = process.env.FREEAPI_DB_PATH;
+const ORIGINAL_DIR_HARDENING = process.env.SPADAK_DB_DIR_HARDENING;
+const ORIGINAL_DB_PATH = process.env.SPADAK_DB_PATH;
 
 function tempDbPath(): string {
   const p = path.join(os.tmpdir(), `freeapi-hardening-${Date.now()}-${Math.random()}.db`);
@@ -39,10 +39,10 @@ function unbornDataDir(): { dataDir: string; dbPath: string } {
 }
 
 afterEach(() => {
-  if (ORIGINAL_DIR_HARDENING === undefined) delete process.env.FREEAPI_DB_DIR_HARDENING;
-  else process.env.FREEAPI_DB_DIR_HARDENING = ORIGINAL_DIR_HARDENING;
-  if (ORIGINAL_DB_PATH === undefined) delete process.env.FREEAPI_DB_PATH;
-  else process.env.FREEAPI_DB_PATH = ORIGINAL_DB_PATH;
+  if (ORIGINAL_DIR_HARDENING === undefined) delete process.env.SPADAK_DB_DIR_HARDENING;
+  else process.env.SPADAK_DB_DIR_HARDENING = ORIGINAL_DIR_HARDENING;
+  if (ORIGINAL_DB_PATH === undefined) delete process.env.SPADAK_DB_PATH;
+  else process.env.SPADAK_DB_PATH = ORIGINAL_DB_PATH;
 
   for (const p of created.splice(0)) {
     for (const suffix of ['', '-wal', '-shm']) {
@@ -175,12 +175,12 @@ describe('data directory hardening policy', () => {
     // An install that predates this change already has server/data, so it never
     // hits the "we created it" case. Without this leg the fix would reach new
     // installs only.
-    delete process.env.FREEAPI_DB_PATH;
+    delete process.env.SPADAK_DB_PATH;
     expect(shouldHardenDataDir(path.dirname(getDefaultDbPath()), false)).toBe(true);
   });
 
   it('matches the default directory case-insensitively on Windows', () => {
-    delete process.env.FREEAPI_DB_PATH;
+    delete process.env.SPADAK_DB_PATH;
     const defaultDir = path.dirname(getDefaultDbPath());
     expect(shouldHardenDataDir(defaultDir.toUpperCase(), false, 'win32')).toBe(true);
     // POSIX paths really are case-sensitive; the same leniency there would be a bug.
@@ -188,24 +188,24 @@ describe('data directory hardening policy', () => {
   });
 
   it('refuses a pre-existing directory it was merely pointed at', () => {
-    // The whole reason this predicate exists: FREEAPI_DB_PATH=/tmp/freeapi.db
+    // The whole reason this predicate exists: SPADAK_DB_PATH=/tmp/freeapi.db
     // must never end in chmod 0700 /tmp.
     expect(shouldHardenDataDir(os.tmpdir(), false)).toBe(false);
     expect(shouldHardenDataDir(existingDir(), false)).toBe(false);
   });
 
   it('lets an operator force it on for a directory of their own', () => {
-    process.env.FREEAPI_DB_DIR_HARDENING = '1';
+    process.env.SPADAK_DB_DIR_HARDENING = '1';
     expect(shouldHardenDataDir(os.tmpdir(), false)).toBe(true);
   });
 
   it('lets an operator force it off even where the default would apply', () => {
-    process.env.FREEAPI_DB_DIR_HARDENING = '0';
+    process.env.SPADAK_DB_DIR_HARDENING = '0';
     expect(shouldHardenDataDir(existingDir(), true)).toBe(false);
   });
 
   it('ignores a value it cannot interpret rather than guessing', () => {
-    process.env.FREEAPI_DB_DIR_HARDENING = 'maybe';
+    process.env.SPADAK_DB_DIR_HARDENING = 'maybe';
     expect(shouldHardenDataDir(os.tmpdir(), false)).toBe(false);
     expect(shouldHardenDataDir(existingDir(), true)).toBe(true);
   });
@@ -279,7 +279,7 @@ describe('WAL sidecars on a normal start', () => {
   itPosix('hardens that same directory once the operator opts in', () => {
     const dir = existingDir();
     fs.chmodSync(dir, 0o755);
-    process.env.FREEAPI_DB_DIR_HARDENING = '1';
+    process.env.SPADAK_DB_DIR_HARDENING = '1';
     connectAndWrite(path.join(dir, 'freeapi.db'));
 
     expect(fs.statSync(dir).mode & 0o777).toBe(0o700);

@@ -6,7 +6,7 @@
 // terminal; a Finder/Explorer-launched Electron app has no attached stdout, so
 // that code was unreadable and the reset flow could never be completed.
 //
-// So tee console output into <userData>/logs/freeapi.log. Writes are synchronous
+// So tee console output into <userData>/logs/spadak.log. Writes are synchronous
 // (a code printed a moment before the app quits must already be on disk) and
 // every filesystem call is wrapped: logging must never be the reason the app
 // fails to start.
@@ -15,7 +15,7 @@ import path from 'node:path';
 import util from 'node:util';
 import { app, shell } from 'electron';
 
-const LOG_NAME = 'freeapi.log';
+const LOG_NAME = 'spadak.log';
 // Two files, 1 MB each: enough history to cover a reset or a bad boot, small
 // enough that nobody's disk notices.
 const MAX_LOG_BYTES = 1024 * 1024;
@@ -35,7 +35,7 @@ export interface FileSink {
 }
 
 // The sink itself, free of electron so it can be exercised in tests: appends to
-// <dir>/freeapi.log and rotates it to freeapi.log.1 once it passes maxBytes.
+// <dir>/spadak.log and rotates it to spadak.log.1 once it passes maxBytes.
 export function createFileSink(dir: string, maxBytes: number = MAX_LOG_BYTES): FileSink {
   const current = path.join(dir, LOG_NAME);
   const previous = path.join(dir, PREVIOUS_NAME);

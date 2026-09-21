@@ -18,7 +18,7 @@ function restoreEnv() {
 
 describe('initDb encryption bootstrapping', () => {
   beforeEach(() => {
-    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'freellmapi-db-'));
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'spadak-db-'));
     process.env.ENCRYPTION_KEY = 'c'.repeat(64);
   });
 

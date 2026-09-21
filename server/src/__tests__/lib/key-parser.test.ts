@@ -153,11 +153,11 @@ describe('key parser', () => {
     expect(looksLikeApiKey('sk-valid-token')).toBe(true);
   });
 
-  it('parses FreeLLMAPI export JSON format', () => {
+  it('parses Spadak AI Gateway export JSON format', () => {
     const exportJson = JSON.stringify({
       version: 1,
       exportedAt: '2026-07-06T12:00:00Z',
-      source: 'freellmapi',
+      source: 'spadak',
       keys: [
         { platform: 'google', key: 'AIza-test-key', label: 'Google Key' },
         { platform: 'groq', key: 'gsk-test-key', label: 'Groq Key' },
@@ -206,19 +206,19 @@ describe('key parser', () => {
     const exportJson = JSON.stringify({
       version: 1,
       exportedAt: '2026-07-06T12:00:00Z',
-      source: 'freellmapi',
+      source: 'spadak',
       keys: [
         { platform: 'mistral', key: 'mist-test', label: 'Mistral Key' },
       ],
     });
-    const result = parseKeysFromFile(exportJson, 'freellmapi-keys.json');
+    const result = parseKeysFromFile(exportJson, 'spadak-keys.json');
     expect(result.keys).toHaveLength(1);
     expect(result.keys[0]).toEqual({ rawKey: 'Mistral Key=mist-test', prefix: 'MISTRAL_', platform: 'mistral' });
   });
 
   it('handles CSV via parseKeysFromFile', () => {
     const csv = 'platform,key,label\n"nvidia","nv-test","Nvidia Key"\n';
-    const result = parseKeysFromFile(csv, 'freellmapi-keys.csv');
+    const result = parseKeysFromFile(csv, 'spadak-keys.csv');
     expect(result.keys).toHaveLength(1);
     expect(result.keys[0]).toEqual({ rawKey: 'NVIDIA_KEY=nv-test', prefix: 'NVIDIA_', platform: 'nvidia' });
   });

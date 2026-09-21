@@ -51,14 +51,14 @@ describe('Backups API', () => {
     // Backups anchor to the database's directory, so point the default DB path
     // at a scratch directory rather than writing dumps into the repo.
     dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'freeapi-backups-'));
-    process.env.FREEAPI_DB_PATH = path.join(dataDir, 'freeapi.db');
+    process.env.SPADAK_DB_PATH = path.join(dataDir, 'freeapi.db');
     initDb(':memory:');
     app = createApp();
     dashToken = mintDashboardToken();
   });
 
   afterAll(() => {
-    delete process.env.FREEAPI_DB_PATH;
+    delete process.env.SPADAK_DB_PATH;
     fs.rmSync(dataDir, { recursive: true, force: true });
   });
 

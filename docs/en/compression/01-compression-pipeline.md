@@ -4,7 +4,7 @@
 
 [← Back to README](../README.md) · [Documentation index](../README.md) · [API reference](../api/01-rest-api.md)
 
-Long coding-agent sessions repeatedly send system prompts, file reads, command output, and tool schemas. FreeLLMAPI can shrink that request context before cache lookup, token budgeting, and routing, so the router sees the reduced estimate and more small-context models remain eligible. Provider responses are never rewritten.
+Long coding-agent sessions repeatedly send system prompts, file reads, command output, and tool schemas. Spadak AI Gateway can shrink that request context before cache lookup, token budgeting, and routing, so the router sees the reduced estimate and more small-context models remain eligible. Provider responses are never rewritten.
 
 The same pipeline runs on Chat Completions, Responses, Anthropic Messages, and Anthropic token counting. Compression is **off by default**.
 
@@ -72,8 +72,8 @@ Built-in filters understand common output from Git, package managers, test runne
 
 Additional JSON filter definitions can be loaded from:
 
-- `~/.freellmapi/filters/*.json` for user-owned filters;
-- `.freellmapi/filters.json` in the project, only when **Trust project filter files** is enabled.
+- `~/.spadak/filters/*.json` for user-owned filters;
+- `.spadak/filters.json` in the project, only when **Trust project filter files** is enabled.
 
 Project filters are disabled by default because repositories may be untrusted.
 

@@ -1,4 +1,4 @@
-# FreeLLMAPI documentation
+# Spadak AI Gateway documentation
 
 Pick a language:
 
