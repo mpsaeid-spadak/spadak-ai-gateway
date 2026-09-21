@@ -18,7 +18,7 @@ The production image, the Compose quickstart, and everything about running Spada
 Spadak AI Gateway publishes a single production image containing the Express server and the built React dashboard:
 
 ```bash
-docker pull ghcr.io/your-org/spadak-ai-gateway:latest   # or pin a release, e.g. :v1.2.3
+docker pull ghcr.io/mpsaeid-spadak/spadak-ai-gateway:latest   # or pin a release, e.g. :v1.2.3
 ```
 
 Published tags: `latest` (default branch), `v*.*.*` (git release tags), and `sha-<commit>`. The image is multi-arch (`linux/amd64` + `linux/arm64`, so it runs on a Raspberry Pi).
@@ -36,7 +36,7 @@ Build shape ([Dockerfile](../../../Dockerfile)):
 Prerequisites: Docker, Docker Compose, OpenSSL. macOS/Linux:
 
 ```bash
-git clone https://github.com/your-org/spadak-ai-gateway.git
+git clone https://github.com/mpsaeid-spadak/spadak-ai-gateway.git
 cd spadak
 
 # Generate an encryption key for at-rest key storage

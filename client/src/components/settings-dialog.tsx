@@ -553,7 +553,7 @@ function PreviewSection({ state }: { state: CompressionState }) {
   )
 }
 
-const RELEASES_URL = 'https://github.com/your-org/spadak-ai-gateway/releases'
+const RELEASES_URL = 'https://github.com/mpsaeid-spadak/spadak-ai-gateway/releases'
 
 function GeneralSection({ active }: { active: boolean }) {
   const { t } = useI18n()
@@ -937,14 +937,14 @@ function UpdateChecker({ active }: { active: boolean }) {
                   <div className="space-y-2">
                     <div className="flex gap-2 rounded-xl border bg-muted/30 p-3">
                       <SquareTerminal className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
-                      <code className="whitespace-pre-wrap break-all font-mono text-[11px]">git fetch https://github.com/your-org/spadak-ai-gateway.git main && git merge --ff-only FETCH_HEAD && npm ci && npm run build</code>
+                      <code className="whitespace-pre-wrap break-all font-mono text-[11px]">git fetch https://github.com/mpsaeid-spadak/spadak-ai-gateway.git main && git merge --ff-only FETCH_HEAD && npm ci && npm run build</code>
                     </div>
                     <p className="text-[11px] text-muted-foreground">{t('settings.restartAfterUpdate')}</p>
                   </div>
                 )}
                 {(info.installation === 'desktop' || info.installation === 'unknown') && (
                   <a
-                    href="https://github.com/your-org/spadak-ai-gateway/releases/latest"
+                    href="https://github.com/mpsaeid-spadak/spadak-ai-gateway/releases/latest"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 text-xs font-medium underline underline-offset-4"

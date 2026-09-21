@@ -11,7 +11,7 @@ import { Markdown } from '@/components/markdown'
 import { apiFetch } from '@/lib/api'
 import { useI18n } from '@/i18n'
 
-const RELEASES_URL = 'https://github.com/your-org/spadak-ai-gateway/releases'
+const RELEASES_URL = 'https://github.com/mpsaeid-spadak/spadak-ai-gateway/releases'
 
 /** How often this browser may ask the server, so a dashboard left open in a
  *  tab isn't re-checking on every navigation. The server caches the upstream

@@ -19,7 +19,7 @@ For installation paths beyond Docker (one-liner script, local development, deskt
 
 | Aspect | Value |
 | --- | --- |
-| Image | `ghcr.io/your-org/spadak-ai-gateway:latest` |
+| Image | `ghcr.io/mpsaeid-spadak/spadak-ai-gateway:latest` |
 | Port | 3001 (published on `127.0.0.1` by default; `HOST_BIND=0.0.0.0` opens it to the LAN) |
 | Data volume | Named volume `spadak-data`, mounted at `/app/server/data` |
 | Runtime user | `node` (non-root) |

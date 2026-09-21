@@ -111,7 +111,7 @@ Example `spadak.ainfig.json`:
 Images are published to GitHub Container Registry:
 
 ```bash
-docker pull ghcr.io/your-org/spadak-ai-gateway:latest
+docker pull ghcr.io/mpsaeid-spadak/spadak-ai-gateway:latest
 ```
 
 The Docker workflow builds pull requests without pushing. After this repository receives the workflow on `main`, pushes to `main` and version tags publish images to GHCR automatically.

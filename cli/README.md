@@ -1,6 +1,6 @@
 # Spadak AI Gateway
 
-Point your coding agent at a [Spadak AI Gateway](https://github.com/your-org/spadak-ai-gateway)
+Point your coding agent at a [Spadak AI Gateway](https://github.com/mpsaeid-spadak/spadak-ai-gateway)
 gateway in one command. The generators read the models your server is actually
 serving and write the config file each tool expects.
 
@@ -61,11 +61,11 @@ them into the child process environment for that run only.
 ## Requirements
 
 Node.js >= 20.18. A running Spadak AI Gateway gateway
-([install guide](https://github.com/your-org/spadak-ai-gateway/blob/main/docs/en/install/01-install.md)).
+([install guide](https://github.com/mpsaeid-spadak/spadak-ai-gateway/blob/main/docs/en/install/01-install.md)).
 
 ## Links
 
-- [Clients & coding agents guide](https://github.com/your-org/spadak-ai-gateway/blob/main/docs/en/clients/01-agent-clients.md)
-- [Issue tracker](https://github.com/your-org/spadak-ai-gateway/issues)
+- [Clients & coding agents guide](https://github.com/mpsaeid-spadak/spadak-ai-gateway/blob/main/docs/en/clients/01-agent-clients.md)
+- [Issue tracker](https://github.com/mpsaeid-spadak/spadak-ai-gateway/issues)
 
 MIT © Tashfeen Ahmed

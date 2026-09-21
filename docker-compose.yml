@@ -1,6 +1,6 @@
 services:
   spadak:
-    image: ghcr.io/your-org/spadak-ai-gateway:latest
+    image: ghcr.io/mpsaeid-spadak/spadak-ai-gateway:latest
     build:
       context: .
       dockerfile: Dockerfile

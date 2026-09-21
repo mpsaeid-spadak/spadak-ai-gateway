@@ -5,12 +5,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-org/spadak-ai-gateway.git",
+    "url": "git+https://github.com/mpsaeid-spadak/spadak-ai-gateway.git",
     "directory": "cli"
   },
-  "homepage": "https://github.com/your-org/spadak-ai-gateway/tree/main/cli#readme",
+  "homepage": "https://github.com/mpsaeid-spadak/spadak-ai-gateway/tree/main/cli#readme",
   "bugs": {
-    "url": "https://github.com/your-org/spadak-ai-gateway/issues"
+    "url": "https://github.com/mpsaeid-spadak/spadak-ai-gateway/issues"
   },
   "keywords": [
     "spadak",

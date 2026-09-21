@@ -23,7 +23,7 @@ export const openapiSpec = {
       'OpenAI-compatible proxy that aggregates free LLM provider tiers behind a single /v1 endpoint. ' +
       'A router picks an available model per request and fails over when a provider is rate-limited. ' +
       'The gateway also speaks OpenAI Responses, Anthropic Messages, native Gemini, and Ollama wire formats.',
-    license: { name: 'MIT', url: 'https://github.com/your-org/spadak-ai-gateway/blob/main/LICENSE' },
+    license: { name: 'MIT', url: 'https://github.com/mpsaeid-spadak/spadak-ai-gateway/blob/main/LICENSE' },
   },
   servers: [
     { url: '/', description: 'This proxy instance' },

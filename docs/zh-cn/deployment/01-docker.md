@@ -18,7 +18,7 @@
 Spadak AI Gateway 发布单个生产镜像，内含 Express 服务器和构建好的 React 仪表盘：
 
 ```bash
-docker pull ghcr.io/your-org/spadak-ai-gateway:latest   # 或固定到某个发布版本，如 :v1.2.3
+docker pull ghcr.io/mpsaeid-spadak/spadak-ai-gateway:latest   # 或固定到某个发布版本，如 :v1.2.3
 ```
 
 已发布的标签：`latest`（默认分支）、`v*.*.*`（git release 标签）和 `sha-<commit>`。镜像是多架构的（`linux/amd64` + `linux/arm64`，所以树莓派也能跑）。
@@ -36,7 +36,7 @@ docker pull ghcr.io/your-org/spadak-ai-gateway:latest   # 或固定到某个发�
 前置条件：Docker、Docker Compose、OpenSSL。macOS/Linux：
 
 ```bash
-git clone https://github.com/your-org/spadak-ai-gateway.git
+git clone https://github.com/mpsaeid-spadak/spadak-ai-gateway.git
 cd spadak
 
 # 生成用于静态存储密钥的加密密钥

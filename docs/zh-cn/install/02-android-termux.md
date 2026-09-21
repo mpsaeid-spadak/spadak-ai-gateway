@@ -34,7 +34,7 @@ node --version
 然后克隆并启动 Spadak AI Gateway：
 
 ```bash
-git clone https://github.com/your-org/spadak-ai-gateway.git
+git clone https://github.com/mpsaeid-spadak/spadak-ai-gateway.git
 cd spadak
 npm install --no-audit --no-fund
 npm run dev

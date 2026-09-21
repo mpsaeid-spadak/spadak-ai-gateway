@@ -8,8 +8,8 @@ import { createUpdateRouter, UPDATE_CHECK_SETTING } from '../../routes/update.js
 import { mintDashboardToken } from '../helpers/auth.js';
 
 const NOW = Date.parse('2026-08-09T14:00:00.000Z');
-const RELEASE_URL = 'https://api.github.com/repos/your-org/spadak-ai-gateway/releases/latest';
-const RELEASES_PAGE = 'https://github.com/your-org/spadak-ai-gateway/releases';
+const RELEASE_URL = 'https://api.github.com/repos/mpsaeid-spadak/spadak-ai-gateway/releases/latest';
+const RELEASES_PAGE = 'https://github.com/mpsaeid-spadak/spadak-ai-gateway/releases';
 
 function httpGet(app: Express, path: string): Promise<{ status: number; body: any }> {
   return new Promise((resolve, reject) => {
